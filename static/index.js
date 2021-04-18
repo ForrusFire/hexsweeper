@@ -1,7 +1,7 @@
 import {generateBoard, revealTile, markTile} from './hexsweeper.js';
 
 const BOARD_SIZE = 6;
-const MINE_COUNT = 10;
+const MINE_COUNT = 18;
 
 
 const board = generateBoard(BOARD_SIZE, MINE_COUNT);
@@ -38,6 +38,6 @@ board.forEach(row => {
 });
 
 
-// 2. Left click on tiles
+// 3. Left click on tiles
     // reveal tiles
 // 4. Check for win/loss

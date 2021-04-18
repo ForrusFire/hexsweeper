@@ -8,6 +8,7 @@
 /* Main */
 .hex, .empty-hex {
     float: left;
+    position: relative;
     margin-right: -26px;
     margin-bottom: -50px;
 }
@@ -56,4 +57,45 @@
 }
 .hex.even {
     margin-top: 53px;
+}
+
+
+.hex[data-status="hidden"] > .left, .hex[data-status="hidden"] > .middle, .hex[data-status="hidden"] > .right {
+    cursor: pointer;
+}
+.hex[data-status="mine"] > .left {
+    border-right: 30px solid red;
+}
+.hex[data-status="mine"] > .middle {
+    background: red;
+} 
+.hex[data-status="mine"] > .right {
+    border-left: 30px solid red;
+}
+.hex[data-status="revealed"] > .left {
+    border-right: 30px solid gray;
+}
+.hex[data-status="revealed"] > .middle {
+    background: gray;
+} 
+.hex[data-status="revealed"] > .right {
+    border-left: 30px solid gray;
+}
+.hex[data-status="marked"] > .left {
+    border-right: 30px solid yellow;
+}
+.hex[data-status="marked"] > .middle {
+    background: yellow;
+} 
+.hex[data-status="marked"] > .right {
+    border-left: 30px solid yellow;
+}
+
+
+.text-content {
+    position: absolute;
+    top: 30px;
+    left: 52px;
+    color: white;
+    font-size: 30px;
 }

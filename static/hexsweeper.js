@@ -51,15 +51,17 @@ export function revealTile(board, tile) {
     const neighborMines = neighborTiles.filter(tile => tile?.mine); // Filter mines
     
     if (neighborMines.length === 0) {
-        // adjacentTiles.forEach(revealTile.bind(null, board)) (TODO)
+        // If there are no neighboring mines, reveal the neighboring tiles
+        neighborTiles.forEach(neighborTile => {
+            revealTile(board, neighborTile)
+        });
     } else {
-        // // Display the number of adjacent mines (TODO)
-        // const textContent = document.createElement('span');
-        // textContent.append(neighborMines.length);
-        // textContent.style.position = 'absolute';
-        // textContent.style.textAlign = 'center';
+        // Display the number of adjacent mines
+        const textContent = document.createElement('div');
+        textContent.classList.add('text-content');
+        textContent.append(neighborMines.length);
 
-        // tile.hex.appendChild(textContent);
+        tile.hex.appendChild(textContent);
     };
 };
 
@@ -72,12 +74,23 @@ function getNeighborTiles(board, tile) {
     appendNeighborTile(board, tile, tiles, -1, 0);
     appendNeighborTile(board, tile, tiles, 1, 0);
     
-    // Append bottom tile
-    appendNeighborTile(board, tile, tiles, 0, -1);
+    // Append top and bottom tiles
+    if (tile.x % 2 == 1) {
+        // Append bottom tile
+        appendNeighborTile(board, tile, tiles, 0, 1);
 
-    // Append top tiles
-    for (let xOffset = -1; xOffset <= 1; xOffset++) {
-        appendNeighborTile(board, tile, tiles, xOffset, 1);
+        // Append top tiles
+        for (let xOffset = -1; xOffset <= 1; xOffset++) {
+            appendNeighborTile(board, tile, tiles, xOffset, -1);
+        };
+    } else {
+        // Append top tile
+        appendNeighborTile(board, tile, tiles, 0, -1);
+
+        // Append bottom tiles
+        for (let xOffset = -1; xOffset <= 1; xOffset++) {
+            appendNeighborTile(board, tile, tiles, xOffset, 1);
+        };
     };
   
     return tiles
