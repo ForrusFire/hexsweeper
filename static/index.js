@@ -1,7 +1,7 @@
-import {generateBoard} from './hexsweeper.js';
+import {generateBoard, revealTile, markTile} from './hexsweeper.js';
 
 const BOARD_SIZE = 6;
-const MINE_COUNT = 0;
+const MINE_COUNT = 10;
 
 
 const board = generateBoard(BOARD_SIZE, MINE_COUNT);
@@ -18,6 +18,19 @@ board.forEach(row => {
     // Add hexes onto hex rows
     row.forEach(tile => {
         rowElem.append(tile.hex);
+        // Left click
+        tile.hex.addEventListener("click", function() {
+            revealTile(board, tile)
+            // TODO
+            // checkGameEnd()
+        });
+        // Right click
+        tile.hex.addEventListener("contextmenu", function(event) {
+            event.preventDefault() // Prevent default right click menu
+            markTile(tile)
+            // TODO
+            // listMinesLeft()
+        });
     });
 
     // Append the hex row to the board element
@@ -25,9 +38,6 @@ board.forEach(row => {
 });
 
 
-// 1. Populate a board with tiles/mines
 // 2. Left click on tiles
     // reveal tiles
-// 3. Right click on tiles
-    // mark tiles
 // 4. Check for win/loss
