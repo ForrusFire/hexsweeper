@@ -1,13 +1,18 @@
-import {generateBoard, revealTile, markTile, checkWin, checkLose} from './hexsweeper.js';
+import {generateBoard, revealTile, markTile, checkWin, checkLose, getNumberofTiles} from './hexsweeper.js';
 
 // Global constants
 const BOARD_SIZE = 6;
-const MINE_COUNT = 18;
+const MINE_COUNT = Math.floor(0.2 * getNumberofTiles(BOARD_SIZE));
 
 
 // Board
 const board = generateBoard(BOARD_SIZE, MINE_COUNT);
 const boardElem = document.querySelector('.board');
+
+const boardWidth = 180 + 94*(2*BOARD_SIZE - 2);
+boardElem.style.width = (boardWidth + "px"); // Set board width
+const boardHeight = 100 + 110*(2*BOARD_SIZE - 1);
+boardElem.style.height = (boardHeight + "px"); // Set board height
 
 // Win-Loss message text element
 const messageText = $('.message-text');

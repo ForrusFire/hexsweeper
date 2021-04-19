@@ -90,6 +90,12 @@ export function checkLose(board) {
 };
 
 
+export function getNumberofTiles(boardSize) {
+    // Returns the number of playable tiles on the board
+    return (3*boardSize - 1) * (boardSize) - (2*boardSize - 1);
+};
+
+
 function getNeighborTiles(board, tile) {
     // Get all tiles that neighbor the input tile
     const tiles = []
@@ -173,12 +179,6 @@ function getMineIndices(boardSize, mineCount) {
     }
 
     return mineIndices
-};
-
-
-function getNumberofTiles(boardSize) {
-    // Returns the number of playable tiles on the board
-    return (3*boardSize - 1) * (boardSize) - (2*boardSize - 1);
 };
 
 
