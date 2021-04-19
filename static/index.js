@@ -1,12 +1,16 @@
-import {generateBoard, revealTile, markTile} from './hexsweeper.js';
+import {generateBoard, revealTile, markTile, checkWin, checkLose} from './hexsweeper.js';
 
+// Global constants
 const BOARD_SIZE = 6;
 const MINE_COUNT = 18;
 
 
+// Board
 const board = generateBoard(BOARD_SIZE, MINE_COUNT);
-console.log(board);
-const boardElem = $('.board');
+const boardElem = document.querySelector('.board');
+
+// Win-Loss message text element
+const messageText = $('.message-text');
 
 
 // Mount board onto HTML element
@@ -21,15 +25,12 @@ board.forEach(row => {
         // Left click
         tile.hex.addEventListener("click", function() {
             revealTile(board, tile)
-            // TODO
-            // checkGameEnd()
+            checkGameEnd()
         });
         // Right click
         tile.hex.addEventListener("contextmenu", function(event) {
             event.preventDefault() // Prevent default right click menu
             markTile(tile)
-            // TODO
-            // listMinesLeft()
         });
     });
 
@@ -38,6 +39,33 @@ board.forEach(row => {
 });
 
 
-// 3. Left click on tiles
-    // reveal tiles
-// 4. Check for win/loss
+function checkGameEnd() {
+    const win = checkWin(board, BOARD_SIZE, MINE_COUNT);
+    const lose = checkLose(board);
+
+    if (win || lose) {
+        // The 'capture:true' makes sure the stopProp goes off before any other events
+        boardElem.addEventListener("click", stopProp, {capture: true});
+        boardElem.addEventListener("contextmenu", stopProp, {capture: true});
+    };
+    
+    if (win) {
+        messageText.text("You Win!");
+    };
+
+    if (lose) {
+        messageText.text("You Lose!");
+        board.forEach(row => {
+            row.forEach(tile => {
+                if (tile.status === 'marked') {markTile(tile)}; // Unmark all tiles
+                if (tile.mine) {revealTile(board, tile)}; // Reveal all mines
+            });
+        });
+    };
+};
+
+
+function stopProp(event) {
+    // Stops all other events on the call
+    event.stopImmediatePropagation()
+};

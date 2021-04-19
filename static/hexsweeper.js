@@ -66,6 +66,30 @@ export function revealTile(board, tile) {
 };
 
 
+export function checkWin(board, boardSize, mineCount) {
+    let numRevealedTiles = 0;
+
+    board.forEach(row => {
+        // Add the number of revealed tiles in each row to the total count
+        const rowRevealedTiles = row.filter(tile => tile.status === 'revealed');
+        numRevealedTiles += rowRevealedTiles.length;
+    });
+
+    const winNumRevealedTiles = (getNumberofTiles(boardSize) - mineCount); // The number of revealed tiles required to win
+    return (numRevealedTiles == winNumRevealedTiles);
+};
+
+
+export function checkLose(board) {
+    // Check if any of the tiles have a status of mine
+    return board.some(row => {
+        return row.some(tile => {
+            return tile.status === 'mine';
+        });
+    });
+};
+
+
 function getNeighborTiles(board, tile) {
     // Get all tiles that neighbor the input tile
     const tiles = []
