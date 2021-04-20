@@ -4,6 +4,9 @@
 * {
     box-sizing: border-box;
 }
+body{
+    background-color:lightgray;
+}
 .board {
     margin-left: auto;
     margin-right: auto;
@@ -30,7 +33,7 @@
 .hex .left {
     float: left;
     width: 0;
-    border-right: 30px solid #6C6;
+    border-right: 30px solid rgb(0, 165, 0);
     border-top: 52px solid transparent;
     border-bottom: 52px solid transparent;
 }
@@ -45,7 +48,7 @@
     float: left;
     width: 60px;
     height: 104px;
-    background: #6C6;
+    background: rgb(0, 165, 0);
 }
 .empty-hex .middle {
     float: left;
@@ -56,7 +59,7 @@
 .hex .right {
     float: left;
     width: 0;
-    border-left: 30px solid #6C6;
+    border-left: 30px solid rgb(0, 165, 0);
     border-top: 52px solid transparent;
     border-bottom: 52px solid transparent;
 }
