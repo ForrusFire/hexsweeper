@@ -7,7 +7,7 @@ export function startTimer(timer, timerElem, delta) {
 };
 
 
-export function updateTimer(timer, timerElem, delta) {
+function updateTimer(timer, timerElem, delta) {
     // Updates and rerenders the timer
     timer[0] += delta;
     renderTimer(timer, timerElem);

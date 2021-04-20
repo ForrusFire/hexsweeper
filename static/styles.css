@@ -29,6 +29,13 @@ body{
     color: rgb(86, 77, 219);
     z-index: 1;
 }
+.card {
+    text-align: center;
+    width: 30rem;
+    background-color: rgb(231, 231, 231);
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* Main */
 .hex, .empty-hex {

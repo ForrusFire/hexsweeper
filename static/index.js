@@ -1,10 +1,15 @@
 import {generateBoard, revealTile, markTile, checkWin, checkLose, getNumberofTiles} from './hexsweeper.js';
-import {updateTimer, renderTimer, startTimer, stopTimer} from "./timer.js"
+import {setSettings} from './settings.js';
+import {renderTimer, startTimer, stopTimer} from "./timer.js"
 
 // Global constants
-const BOARD_SIZE = 6;
-const MINE_TILE_PERCENTAGE = 0.2; // About 15% to 25% is standard
+const BOARD_SIZE = (sessionStorage.getItem('board')) ? sessionStorage.getItem('board') : 6;
+const MINE_TILE_PERCENTAGE = 0.22; // About 15% to 25% is standard
 const MINE_COUNT = getMineCount();
+
+
+// Set settings
+setSettings();
 
 
 // Board
