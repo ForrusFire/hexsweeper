@@ -12,6 +12,13 @@ body{
     margin-right: auto;
     padding: 100px 25px 50px 25px;
 }
+.timer {
+    position: fixed;
+    font-size: 20px;
+    color:rgb(86, 77, 219);
+    top: 90px;
+    left: 25px;
+}
 .message-text {
     position: fixed;
     width: 98vw;

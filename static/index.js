@@ -1,21 +1,29 @@
 import {generateBoard, revealTile, markTile, checkWin, checkLose, getNumberofTiles} from './hexsweeper.js';
+import {updateTimer, renderTimer, startTimer, stopTimer} from "./timer.js"
 
 // Global constants
 const BOARD_SIZE = 6;
-const MINE_COUNT = Math.floor(0.2 * getNumberofTiles(BOARD_SIZE));
+const MINE_TILE_PERCENTAGE = 0.2; // About 15% to 25% is standard
+const MINE_COUNT = getMineCount();
 
 
 // Board
 const board = generateBoard(BOARD_SIZE, MINE_COUNT);
 const boardElem = document.querySelector('.board');
 
-const boardWidth = 180 + 94*(2*BOARD_SIZE - 2);
-boardElem.style.width = (boardWidth + "px"); // Set board width
-const boardHeight = 100 + 110*(2*BOARD_SIZE - 1);
-boardElem.style.height = (boardHeight + "px"); // Set board height
+boardElem.style.width = getBoardDim('width'); // Set board width
+boardElem.style.height = getBoardDim('height'); // Set board height
 
 // Win-Loss message text element
 const messageText = $('.message-text');
+
+// Timer
+const timer = [0];
+const timerElem = document.querySelector('.timer');
+renderTimer(timer, timerElem);
+
+let timerID; // ID returned by setInterval and closed by clearInterval
+const delta = 10; // Time between intervals
 
 
 // Mount board onto HTML element
@@ -29,6 +37,9 @@ board.forEach(row => {
         rowElem.append(tile.hex);
         // Left click
         tile.hex.addEventListener("click", function() {
+            // If there is no timerID yet, start the timer
+            timerID = (timerID === undefined) ? startTimer(timer, timerElem, delta) : timerID;
+
             revealTile(board, tile)
             checkGameEnd()
         });
@@ -46,20 +57,18 @@ board.forEach(row => {
 
 function checkGameEnd() {
     const win = checkWin(board, BOARD_SIZE, MINE_COUNT);
-    const lose = checkLose(board);
-
-    if (win || lose) {
-        // The 'capture:true' makes sure the stopProp goes off before any other events
-        boardElem.addEventListener("click", stopProp, {capture: true});
-        boardElem.addEventListener("contextmenu", stopProp, {capture: true});
-    };
-    
     if (win) {
+        stopTimer(timerID);
+        stopBoardClicks(boardElem);
         messageText.text("You Win!");
     };
 
+    const lose = checkLose(board);
     if (lose) {
+        stopTimer(timerID);
+        stopBoardClicks(boardElem);
         messageText.text("You Lose!");
+
         board.forEach(row => {
             row.forEach(tile => {
                 if (tile.status === 'marked') {markTile(tile)}; // Unmark all tiles
@@ -70,7 +79,26 @@ function checkGameEnd() {
 };
 
 
+function stopBoardClicks(boardElem) {
+    // The 'capture:true' makes sure the stopProp goes off before any other events
+    boardElem.addEventListener("click", stopProp, {capture: true});
+    boardElem.addEventListener("contextmenu", stopProp, {capture: true});
+};
+
+
 function stopProp(event) {
     // Stops all other events on the call
     event.stopImmediatePropagation()
+};
+
+
+function getMineCount() {
+    return Math.floor(MINE_TILE_PERCENTAGE * getNumberofTiles(BOARD_SIZE));
+};
+
+
+function getBoardDim(dim) {
+    // Gets the board dimension in pixels and returns a string to input as CSS style
+    if (dim === 'width') {return (180 + 94*(2*BOARD_SIZE - 2)) + 'px'};
+    if (dim === 'height') {return (100 + 110*(2*BOARD_SIZE - 1)) + 'px'};
 };
